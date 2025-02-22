@@ -14,7 +14,7 @@ import argparse
 import logging
 
 VERSION = "0.0.1"
-FILE_NAME = "adc_value_2025_2_20_14_9_22.log"
+FILE_NAME = "adc_value_sample.log"
 # =============================================================================
 # Initialize logger
 # =============================================================================
