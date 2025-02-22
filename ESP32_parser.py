@@ -9,16 +9,46 @@
 # Import required modules
 # =============================================================================
 import os
+import matplotlib.pyplot as plt
 import argparse
 import logging
 
 VERSION = "0.0.1"
-
+FILE_NAME = "adc_value_2025_2_20_14_9_22.log"
 # =============================================================================
 # Initialize logger
 # =============================================================================
 def logger_setup():
+    """setup logger"""
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
+    return logger
 
+def plotter_data_from_file(file_name: str):
+    """plotter the data from file"""
+    logger = logger_setup()
+    logger.info(f"plotter_data_from_file: {file_name}")
+    if not os.path.exists(file_name):
+        logger.error(f"file not found: {file_name}")
+        return
+    with open(file_name, "r") as f:
+        data = [line.strip() for line in f.readlines()]
+    logger.info(f"read data from file: {file_name}")
+    logger.info(f"data: {data}")
+    data = [line.split(": ") for line in data]
+    x = []
+    y = []
+    for element in data:
+            x.append(int(element[0]))
+            y.append(int(element[1]))
+    logger.info(f"x: {x} \n")
+    logger.info(f"y: {y} \n")
+    plt.grid(True)
+    plt.plot(x,y)
+    plt.title("ESP32 ADC value")
+    plt.xlabel("Time")
+    plt.ylabel("ADC value")
+    plt.show()
 
 # =============================================================================
 # argument parser setup
@@ -37,7 +67,7 @@ def parse_options(version: str = "0.0.1"):
     
     
 def main():
-
+    plotter_data_from_file(FILE_NAME)
     
 
 if __name__ == "__main__":
