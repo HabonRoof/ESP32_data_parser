@@ -12,6 +12,7 @@ import os
 import matplotlib.pyplot as plt
 import argparse
 import logging
+import scipy
 
 VERSION = "0.0.1"
 FILE_NAME = "adc_value_sample.log"
@@ -41,10 +42,13 @@ def plotter_data_from_file(file_name: str):
     for element in data:
             x.append(int(element[0]))
             y.append(int(element[1]))
+    mean_y = scipy.ndimage.uniform_filter1d(y, size=30)
+    logger.info(f"mean y: {mean_y}")
     logger.info(f"x: {x} \n")
     logger.info(f"y: {y} \n")
     plt.grid(True)
-    plt.plot(x,y)
+    plt.plot(x,y, label = "raw")
+    plt.plot(x, mean_y, label = "mean")
     plt.title("ESP32 ADC value")
     plt.xlabel("Time")
     plt.ylabel("ADC value")
