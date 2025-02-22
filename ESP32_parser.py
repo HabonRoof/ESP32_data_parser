@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import argparse
 import logging
 import scipy
+import numpy as np
 
 VERSION = "0.0.1"
 FILE_NAME = "adc_value_sample.log"
@@ -42,8 +43,12 @@ def plotter_data_from_file(file_name: str):
     for element in data:
             x.append(int(element[0]))
             y.append(int(element[1]))
+
     mean_y = scipy.ndimage.uniform_filter1d(y, size=30)
-    logger.info(f"mean y: {mean_y}")
+    mean_y = np.pad(mean_y, (0, len(y) - len(mean_y)), 'constant')
+    
+    logger.info(f"mean y (padded): {mean_y}")
+    logger.info(f"x: {x} \n")
     logger.info(f"x: {x} \n")
     logger.info(f"y: {y} \n")
     plt.grid(True)
